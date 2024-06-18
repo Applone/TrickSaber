@@ -48,6 +48,7 @@ namespace TrickSaber
         private readonly PluginConfig _config;
         private readonly IDifficultyBeatmap _iDifficultyBeatmap;
         private readonly AudioTimeSyncController _audioTimeSyncController;
+        private readonly ICoroutineStarter _coroutineStarter;
 
         private readonly float _slowmoStepAmount;
         private readonly bool _isMultiplayer;
@@ -66,6 +67,7 @@ namespace TrickSaber
             PluginConfig config,
             AudioTimeSyncController audioTimeSyncController,
             GameplayCoreSceneSetupData gameplayCoreSceneSetup,
+            ICoroutineStarter coroutineStarter,
             [Inject(Id = SaberType.SaberA)] SaberTrickManager leftTrickManager,
             [Inject(Id = SaberType.SaberB)] SaberTrickManager rightTrickManager,
             [InjectOptional] MultiplayerPlayersManager multiplayerPlayersManager)
@@ -73,6 +75,7 @@ namespace TrickSaber
             _logger = logger;
             _config = config;
             _audioTimeSyncController = audioTimeSyncController;
+            _coroutineStarter = coroutineStarter;
 
             _iDifficultyBeatmap = gameplayCoreSceneSetup.difficultyBeatmap;
 
@@ -106,10 +109,10 @@ namespace TrickSaber
                 var timeScale = _audioTimeSyncController.timeScale;
                 if (_endSlowmoCoroutine != null)
                 {
-                    SharedCoroutineStarter.instance.StopCoroutine(_endSlowmoCoroutine);
+                    _coroutineStarter.StopCoroutine(_endSlowmoCoroutine);
                     timeScale = _endSlowmoTarget;
                 }
-                _applySlowmoCoroutine = SharedCoroutineStarter.instance.StartCoroutine(ApplySlowmoSmooth(_config.SlowmoAmount, timeScale));
+                _applySlowmoCoroutine = _coroutineStarter.StartCoroutine(ApplySlowmoSmooth(_config.SlowmoAmount, timeScale));
                 _slowmoApplied = true;
             }
         }
@@ -120,8 +123,8 @@ namespace TrickSaber
                 if (_config.SlowmoDuringThrow && !_isMultiplayer &&
                     !IsTrickInState(trickAction, TrickState.Started) && _slowmoApplied)
                 {
-                    if(_applySlowmoCoroutine!=null)SharedCoroutineStarter.instance.StopCoroutine(_applySlowmoCoroutine);
-                    _endSlowmoCoroutine = SharedCoroutineStarter.instance.StartCoroutine(EndSlowmoSmooth());
+                    if(_applySlowmoCoroutine!=null) _coroutineStarter.StopCoroutine(_applySlowmoCoroutine);
+                    _endSlowmoCoroutine = _coroutineStarter.StartCoroutine(EndSlowmoSmooth());
                     _slowmoApplied = false;
                 }
         }
