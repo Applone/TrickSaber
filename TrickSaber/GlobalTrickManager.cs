@@ -46,7 +46,7 @@ namespace TrickSaber
 
         private readonly SiraLog _logger;
         private readonly PluginConfig _config;
-        private readonly IDifficultyBeatmap _iDifficultyBeatmap;
+        private readonly BeatmapBasicData _beatmapBasicData;
         private readonly AudioTimeSyncController _audioTimeSyncController;
         private readonly ICoroutineStarter _coroutineStarter;
 
@@ -77,7 +77,7 @@ namespace TrickSaber
             _audioTimeSyncController = audioTimeSyncController;
             _coroutineStarter = coroutineStarter;
 
-            _iDifficultyBeatmap = gameplayCoreSceneSetup.difficultyBeatmap;
+            _beatmapBasicData = gameplayCoreSceneSetup.beatmapBasicData;
 
             _slowmoStepAmount = _config.SlowmoStepAmount;
 
@@ -183,7 +183,7 @@ namespace TrickSaber
         public bool CanDoTrick()
         {
             if (!_config.DisableIfNotesOnScreen) return true;
-            if (_timeSinceLastNote > 20/_iDifficultyBeatmap.noteJumpMovementSpeed) return true;
+            if (_timeSinceLastNote > 20/_beatmapBasicData.noteJumpMovementSpeed) return true;
             return false;
         }
 
