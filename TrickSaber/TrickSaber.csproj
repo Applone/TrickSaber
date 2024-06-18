@@ -50,6 +50,11 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="BGLib.UnityExtension">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BGLib.UnityExtension.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="BSML">
       <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
       <Private>False</Private>
@@ -65,6 +70,11 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="DataModels">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\DataModels.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="GameplayCore">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\GameplayCore.dll</HintPath>
       <Private>False</Private>
@@ -77,11 +87,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(BeatSaberDir)\Libs\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Oculus.VR">
-      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Oculus.VR.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="SiraUtil">
       <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
