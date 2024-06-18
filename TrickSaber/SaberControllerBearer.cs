@@ -9,11 +9,9 @@ namespace TrickSaber
 
         private SaberControllerBearer(SaberManager saberManager, PlayerVRControllersManager playerVrControllersManager)
         {
-            _left = new SaberControllerPackage(saberManager.leftSaber,
-                playerVrControllersManager.GetField<VRController, PlayerVRControllersManager>("_leftHandVRController"));
+            _left = new SaberControllerPackage(saberManager.leftSaber, playerVrControllersManager._leftHandVRController);
 
-            _right = new SaberControllerPackage(saberManager.rightSaber,
-                playerVrControllersManager.GetField<VRController, PlayerVRControllersManager>("_rightHandVRController"));
+            _right = new SaberControllerPackage(saberManager.rightSaber, playerVrControllersManager._rightHandVRController);
         }
 
         public SaberControllerPackage this[SaberType saberType] => saberType == SaberType.SaberA ? _left : _right;

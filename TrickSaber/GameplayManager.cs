@@ -74,7 +74,7 @@ namespace TrickSaber
         {
             if (_pauseMenuManager == null) return;
 
-            var canvas = _pauseMenuManager.GetField<LevelBar, PauseMenuManager>("_levelBar")
+            var canvas = _pauseMenuManager._levelBar
                 .transform
                 .parent
                 .parent

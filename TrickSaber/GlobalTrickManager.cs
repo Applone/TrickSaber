@@ -14,8 +14,8 @@ namespace TrickSaber
         {
             get
             {
-                if(_audioSource==null)
-                    _audioSource = _audioTimeSyncController.GetField<AudioSource, AudioTimeSyncController>("_audioSource");
+                if (_audioSource == null)
+                    _audioSource = _audioTimeSyncController._audioSource;
                 return _audioSource;
             }
         }
