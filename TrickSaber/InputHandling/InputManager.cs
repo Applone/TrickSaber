@@ -13,48 +13,29 @@ namespace TrickSaber.InputHandling
         public event Action<TrickAction> TrickDeactivated;
 
         private readonly PluginConfig _config;
-        private readonly SiraLog _logger;
         private readonly TrickInputHandler _trickInputHandler;
 
-        private InputManager(PluginConfig config, SiraLog logger)
+        private InputManager(PluginConfig config)
         {
             _config = config;
-            _logger = logger;
 
             _trickInputHandler = new TrickInputHandler();
         }
 
         public void Init(SaberType type)
         {
-            OVRInput.Controller oculusController;
-            XRNode node;
-            if (type == SaberType.SaberA)
-            {
-                oculusController = OVRInput.Controller.LTouch;
-                node = XRNode.LeftHand;
-            }
-            else
-            {
-                oculusController = OVRInput.Controller.RTouch;
-                node = XRNode.RightHand;
-            }
-
+            XRNode node = type == SaberType.SaberA ? XRNode.LeftHand : XRNode.RightHand;
             var controllerInputDevice = InputDevices.GetDeviceAtXRNode(node);
-
-            var vrSystem = OVRInput.IsControllerConnected(oculusController) ? VRSystem.Oculus : VRSystem.SteamVR;
 
             var dir = _config.ThumstickDirection;
 
             var triggerHandler = new TriggerHandler(node, _config.TriggerThreshold, _config.ReverseTrigger);
-            var gripHandler = new GripHandler(vrSystem, oculusController, controllerInputDevice,
-                _config.GripThreshold, _config.ReverseGrip);
+            var gripHandler = new GripHandler(controllerInputDevice, _config.GripThreshold, _config.ReverseGrip);
             var thumbstickAction = new ThumbstickHandler(node, _config.ThumbstickThreshold, dir, _config.ReverseThumbstick);
 
             _trickInputHandler.Add(_config.TriggerAction, triggerHandler);
             _trickInputHandler.Add(_config.GripAction, gripHandler);
             _trickInputHandler.Add(_config.ThumbstickAction, thumbstickAction);
-
-            _logger.Debug("Started Input Manager using " + vrSystem);
         }
 
         // Using ITickable seems to result in GetHandlers returning no handlers (?!?)
