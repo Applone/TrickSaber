@@ -18,19 +18,15 @@ namespace TrickSaber
 
         private readonly PluginConfig _config;
         private readonly SiraSaberFactory _saberFactory;
-        private readonly ColorManager _colorManager;
-        private readonly SiraLog _logger;
         private SiraSaber _siraSaber;
         private Transform _saberTransform;
 
         private readonly bool _isMultiplayer;
 
-        private SaberTrickModel(PluginConfig config, SiraSaberFactory saberFactory, ColorManager colorManager, [InjectOptional] MultiplayerPlayersManager multiplayerPlayersManager, SiraLog logger)
+        private SaberTrickModel(PluginConfig config, SiraSaberFactory saberFactory, ColorManager colorManager, [InjectOptional] MultiplayerPlayersManager multiplayerPlayersManager)
         {
             _config = config;
             _saberFactory = saberFactory;
-            _colorManager = colorManager;
-            _logger = logger;
 
             _isMultiplayer = multiplayerPlayersManager != null;
         }
@@ -46,8 +42,6 @@ namespace TrickSaber
                 Object.DestroyImmediate(_siraSaber.gameObject);
                 return false;
             }
-
-            _siraSaber.SetColor(_colorManager.ColorForSaberType(saber.saberType));
 
             TrickModel = _siraSaber.gameObject;
             _saberTransform = _siraSaber.transform;
