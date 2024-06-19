@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
-using SiraUtil;
-using SiraUtil.Logging;
 using UnityEngine;
 using SiraUtil.Sabers;
-using SiraUtil.Tools;
 using TrickSaber.Configuration;
 using Zenject;
 using Object = UnityEngine.Object;
@@ -23,7 +20,7 @@ namespace TrickSaber
 
         private readonly bool _isMultiplayer;
 
-        private SaberTrickModel(PluginConfig config, SiraSaberFactory saberFactory, ColorManager colorManager, [InjectOptional] MultiplayerPlayersManager multiplayerPlayersManager)
+        private SaberTrickModel(PluginConfig config, SiraSaberFactory saberFactory, [InjectOptional] MultiplayerPlayersManager multiplayerPlayersManager)
         {
             _config = config;
             _saberFactory = saberFactory;
