@@ -74,7 +74,7 @@ namespace TrickSaber.ViewControllers
 
         [UIValue("ShowIndexText")] public bool ShowIndexText => _pluginInfo.IsKnucklesController;
 
-        [UIValue("ContactInfo")] public string ContactInfo => "My Discord : Toni Macaroni#8970";
+        [UIValue("ContactInfo")] public string ContactInfo => "Original mod by Toni Macaroni"; // "My Discord : Toni Macaroni#8970"
 
         [UIValue("Version")] public string Version => _pluginInfo.Version.ToString();
 
