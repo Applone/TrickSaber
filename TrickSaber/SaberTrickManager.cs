@@ -84,7 +84,7 @@ namespace TrickSaber
             _inputManager.TrickDeactivated += OnTrickDeactivated;
 
             var success = await SaberTrickModel.Init(_saber);
-            if (success) _logger.Info($"Got saber model");
+            if (success) _logger.Debug($"Got saber model");
             else
             {
                 _logger.Error("Couldn't get saber model");
@@ -97,14 +97,12 @@ namespace TrickSaber
             AddTrick<SpinTrick>();
             AddTrick<ThrowTrick>();
 
-            _logger.Info($"{Tricks.Count} tricks initialized");
-
             if (_pauseController)
             {
                 _pauseController.didResumeEvent += EndAllTricks;
             }
 
-            _logger.Info("Trick Manager initialized");
+            _logger.Info($"Trick Manager initialized {Tricks.Count} trick{(Tricks.Count == 1 ? string.Empty : "s")}.");
         }
 
         private void Cleanup()
