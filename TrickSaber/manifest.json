@@ -3,12 +3,12 @@
   "id": "TrickSaber",
   "name": "TrickSaber",
   "author": "Toni Macaroni",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A BeatSaber mod for performing tricks",
-  "gameVersion": "1.37.0",
+  "gameVersion": "1.37.4",
   "dependsOn": {
-    "BSIPA": "^4.3.4",
-    "SiraUtil": "^3.1.10",
-    "BeatSaberMarkupLanguage": "^1.11.2"
+    "BSIPA": "^4.3.5",
+    "SiraUtil": "^3.1.12",
+    "BeatSaberMarkupLanguage": "^1.11.4"
   }
 }
