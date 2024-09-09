@@ -90,7 +90,7 @@ namespace TrickSaber
 
             var toggleSetting = toggleObject.GetComponent<ToggleSetting>();
             toggleSetting.Value = _config.TrickSaberEnabled;
-            toggleSetting.toggle.onValueChanged.AddListener(enabled => { _config.TrickSaberEnabled = enabled; });
+            toggleSetting.Toggle.onValueChanged.AddListener(enabled => { _config.TrickSaberEnabled = enabled; });
         }
     }
 }
