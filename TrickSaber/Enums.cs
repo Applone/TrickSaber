@@ -34,6 +34,12 @@ namespace TrickSaber
         Ending
     }
 
+    public enum SaberReturnMode
+    {
+        Timed,
+        Manual
+    }
+
     public static class EnumTools
     {
         public static TEnum GetEnumValue<TEnum>(this string name)

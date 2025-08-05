@@ -15,6 +15,14 @@
 	                   hover-hint='Multiplies the throw velocity with the value' />
 	<increment-setting text='Saber return speed' value='ReturnSpeed-value' min='1' max='100' increment='0.5'
 	                   integer-only='false' apply-on-change='true' hover-hint='How fast does the saber return' />
+	<increment-setting text='Throw Wind-Up Delay' value='ThrowWindUp-value' min='0.1' max='1.0' increment='0.05'
+                       integer-only='false' apply-on-change='true'
+                       hover-hint='Delay in seconds before the saber is thrown after pressing the button.' />
+    <increment-setting text='Throw Return Delay' value='ThrowReturn-value' min='0.1' max='2.0' increment='0.1'
+                       integer-only='false' apply-on-change='true'
+                       hover-hint='Delay in seconds before the saber starts returning after letting go of the button.' />
+	<list-setting text='Saber Return Mode' value='ReturnMode-value' options='ReturnModeEnum-list' apply-on-change='true'
+                  hover-hint='Timed: returns on timer after release. Manual: returns on second press.' />
 	<checkbox-setting text='Slowmo during throw' value='SlowmoDuringThrow-value' apply-on-change='true'
 	                  hover-hint='!DISABLES SCORE SUBMISSION!' />
 	<checkbox-setting text='Disable if notes on screen' value='DisableIfNotesOnScreen-value' apply-on-change='true'

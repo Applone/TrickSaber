@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using IPA.Utilities;
 using SiraUtil.Logging;
 using SiraUtil.Tools;
@@ -13,6 +14,7 @@ namespace TrickSaber
     internal class SaberTrickManager : MonoBehaviour
     {
         public readonly Dictionary<TrickAction, Trick> Tricks = new Dictionary<TrickAction, Trick>();
+        private readonly Dictionary<TrickAction, Coroutine> _pendingTricks = new Dictionary<TrickAction, Coroutine>();
 
         public SaberTrickModel SaberTrickModel;
 
@@ -33,6 +35,8 @@ namespace TrickSaber
         private AudioTimeSyncController _audioTimeSyncController;
 
         private Trick.Factory _trickFactory;
+
+        private bool _throwInputReleased;
 
         [Inject]
         private void Construct(
@@ -124,23 +128,80 @@ namespace TrickSaber
         private void OnTrickDeactivated(TrickAction trickAction)
         {
             var trick = Tricks[trickAction];
-            if (trick.State != TrickState.Started) return;
-            trick.EndTrick();
+
+            if (trickAction == TrickAction.Throw)
+            {
+                _throwInputReleased = true;
+            }
+            else
+            {
+                if (trick.State == TrickState.Started) trick.EndTrick();
+            }
         }
 
         private void OnTrickActivated(TrickAction trickAction, float val)
         {
-            if (!CanDoTrick()) return;
+            // --- Logic for throwing ---
+            if (trickAction == TrickAction.Throw)
+            {
+                var throwTrick = Tricks[TrickAction.Throw];
+
+                // 1. Manual return on the second press
+                if (_config.ReturnMode == SaberReturnMode.Manual && throwTrick.State == TrickState.Started)
+                {
+                    throwTrick.EndTrick();
+                    return;
+                }
+
+                // 2. Protection from spam and starting a new throw until the old one is completed
+                if (throwTrick.State != TrickState.Inactive || _pendingTricks.ContainsKey(TrickAction.Throw)) return;
+
+                // 3. Starting a new throw
+                if (!CanDoTrick()) return;
+
+                _throwInputReleased = false;
+                var coroutine = StartCoroutine(ThrowLifecycleCoroutine(throwTrick));
+                _pendingTricks.Add(TrickAction.Throw, coroutine);
+                return;
+            }
+
+            // --- Logic for other tricks ---
             var trick = Tricks[trickAction];
+            if (!CanDoTrick()) return;
             trick.Value = val;
             if (trick.State != TrickState.Inactive) return;
-            if (_audioTimeSyncController.state ==
-                AudioTimeSyncController.State.Paused) return;
+            if (_audioTimeSyncController.state == AudioTimeSyncController.State.Paused) return;
             trick.StartTrick();
         }
 
-        #region Trick Events
+        private IEnumerator ThrowLifecycleCoroutine(Trick trick)
+        {
+            // 1. Swing phase
+            yield return new WaitForSeconds(_config.ThrowWindUpDelay);
 
+            // 2. Throw
+            if (trick.State == TrickState.Inactive) trick.StartTrick();
+            _pendingTricks.Remove(TrickAction.Throw);
+
+            // 3. Return logic
+            if (_config.ReturnMode == SaberReturnMode.Manual)
+            {
+                yield break;
+            }
+
+            // In Timed mode
+            if (_throwInputReleased)
+            {
+                trick.EndTrick();
+            }
+            else
+            {
+                yield return new WaitUntil(() => _throwInputReleased);
+                trick.EndTrick();
+            }
+        }
+
+        #region Trick Events
         private void OnTrickStart(TrickAction trickAction)
         {
             _globalTrickManager.OnTrickStarted(trickAction);
@@ -155,7 +216,6 @@ namespace TrickSaber
         {
             _globalTrickManager.OnTrickEnded(trickAction);
         }
-
         #endregion
 
         private void AddTrick<T>() where T : Trick

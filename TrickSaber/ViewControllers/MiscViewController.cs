@@ -19,6 +19,9 @@ namespace TrickSaber.ViewControllers
         [UIValue("DirEnum-list")]
         public List<object> ThumbstickDirectionsList = Enum.GetNames(typeof(ThumstickDir)).ToList<object>();
 
+        [UIValue("ReturnModeEnum-list")]
+        public List<object> ReturnModesList = Enum.GetNames(typeof(SaberReturnMode)).ToList<object>();
+
         [UIComponent("scrollable")] private readonly Transform _scrollable = null;
 
         [Inject] private readonly PluginConfig _config = null;
@@ -63,6 +66,27 @@ namespace TrickSaber.ViewControllers
         {
             get => _config.ReturnSpeed;
             set => _config.ReturnSpeed = value;
+        }
+
+        [UIValue("ThrowWindUp-value")]
+        public float ThrowWindUp
+        {
+            get => _config.ThrowWindUpDelay;
+            set => _config.ThrowWindUpDelay = value;
+        }
+
+        [UIValue("ThrowReturn-value")]
+        public float ThrowReturn
+        {
+            get => _config.ThrowReturnDelay;
+            set => _config.ThrowReturnDelay = value;
+        }
+
+        [UIValue("ReturnMode-value")]
+        public string ReturnMode
+        {
+            get => _config.ReturnMode.ToString();
+            set => _config.ReturnMode = value.GetEnumValue<SaberReturnMode>();
         }
 
         [UIValue("SlowmoDuringThrow-value")]

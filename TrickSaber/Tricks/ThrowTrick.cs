@@ -26,6 +26,15 @@ namespace TrickSaber.Tricks
 
         public override void OnTrickEndRequested()
         {
+            StartCoroutine(DelayedReturn());
+        }
+
+        private IEnumerator DelayedReturn()
+        {
+            if (_config.ReturnMode == SaberReturnMode.Timed)
+            {
+                yield return new WaitForSeconds(_config.ThrowReturnDelay);
+            }
             SaberTrickModel.Rigidbody.velocity = Vector3.zero;
             StartCoroutine(ReturnSaber(_config.ReturnSpeed));
         }
@@ -44,7 +53,7 @@ namespace TrickSaber.Tricks
 
         public IEnumerator ReturnSaber(float speed)
         {
-            SaberTrickModel.Rigidbody.AddRelativeTorque(Vector3.right * speed * (_saberRotSpeed<0?-1:1) * _config.ReturnSpinMultiplier, ForceMode.VelocityChange);
+            SaberTrickModel.Rigidbody.AddRelativeTorque(Vector3.right * speed * (_saberRotSpeed < 0 ? -1 : 1) * _config.ReturnSpinMultiplier, ForceMode.VelocityChange);
             Vector3 position = SaberTrickModel.TrickModel.transform.position;
             var controllerPos = MovementController.ControllerPosition;
             float distance = Vector3.Distance(position, controllerPos);

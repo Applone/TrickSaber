@@ -60,9 +60,18 @@ namespace TrickSaber.Configuration
         [DisablesScoring]
         public bool HitNotesDuringTrick { get; set; } = false;
 
-        //Advanced
+        // Advanced
         public int VelocityBufferSize { get; set; } = 5;
 
         public float SlowmoStepAmount { get; set; } = 0.02f;
+
+        // Windows before throw and after throw
+        public float ThrowWindUpDelay { get; set; } = 0.4f;
+
+        public float ThrowReturnDelay { get; set; } = 0.8f;
+
+        // Saber return mode configuration
+        [UseConverter(typeof(EnumConverter<SaberReturnMode>))]
+        public SaberReturnMode ReturnMode { get; set; } = SaberReturnMode.Timed;
     }
 }
