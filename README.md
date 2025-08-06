@@ -1,28 +1,17 @@
 # Trick Saber
-![](Resources/LogoSmall.png)
 
 This mod allows you to perform various tricks like spinning / throwing your sabers,
 hence the name "Trick Saber".
-*Currently not compatible with DynamicOpenVR.BeatSaber (the base mod DynamicOpenVR is fine tho)*
-
-[Documentation](https://tonimacaroni.github.io/TrickSaber-Docs/)
 
 ## Installation
-1) Download the latest release from here (the zip file): https://github.com/qqrz997/TrickSaber/releases
-2) Make sure you have installed the dependencies listed in the release
-3) Drop the zip contents into your Beat Saber directory
-
-**If you use index controllers you HAVE to choose a compatible SteamVR binding**  
-*Take a look [here](https://www.youtube.com/watch?v=e3NI0mjVM0s) on how to do that*
+1) Download the latest release from here (the zip file): https://github.com/Applone/TrickSaber/releases
+2) Drop the zip contents into your Beat Saber Plugin directory
 
 ## Usage
-*Buttons can be configured*
 
 For throwing the saber:
-1) Throw your controller (not literally)
-2) Hold the trigger button to release the saber
-3) Release the trigger button to pull the saber back to you
-   (It does take a little bit of practice)
+1) Press the trigger button to throw the saber
+2) Wait or press the trigger again to back the saber
 
 For rotating the saber in your hand:
 * For left saber: move your left thumbstick to the left
@@ -30,7 +19,5 @@ For rotating the saber in your hand:
 
 ## Configuration
 You can configure most of the Plugin by going into the "Mods" tab on the left panel in Beat Saber and selecting "TrickSaber".
-
-For more stuff and in-depth explanation see [Configuration](https://tonimacaroni.github.io/TrickSaber-Docs/Configuration.html)
 
 **Preview: https://www.youtube.com/watch?v=6xxpupYYjoQ**
