@@ -31,9 +31,11 @@ namespace TrickSaber.InputHandling
 
             if (activationValue > Threshold)
             {
+                if (!IsUpTriggered) return false; // Already pressed, do not send signal again
+
                 val = IsReversed ? activationValue : value;
-                IsUpTriggered = false;
-                return true;
+                IsUpTriggered = false; // Mark as button pressed
+                return true; // Send signal only on the first frame
             }
 
             return false;
@@ -43,8 +45,8 @@ namespace TrickSaber.InputHandling
         {
             if (GetActivationValue(GetInputValue()) < Threshold && !IsUpTriggered)
             {
-                IsUpTriggered = true;
-                return true;
+                IsUpTriggered = true; // Mark as button released
+                return true; // Send signal only on the first frame
             }
 
             return false;

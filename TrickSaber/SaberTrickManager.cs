@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using IPA.Utilities;
 using SiraUtil.Logging;
-using SiraUtil.Tools;
 using TrickSaber.Configuration;
 using TrickSaber.InputHandling;
 using TrickSaber.Tricks;
@@ -14,7 +12,6 @@ namespace TrickSaber
     internal class SaberTrickManager : MonoBehaviour
     {
         public readonly Dictionary<TrickAction, Trick> Tricks = new Dictionary<TrickAction, Trick>();
-        private readonly Dictionary<TrickAction, Coroutine> _pendingTricks = new Dictionary<TrickAction, Coroutine>();
 
         public SaberTrickModel SaberTrickModel;
 
@@ -141,64 +138,41 @@ namespace TrickSaber
 
         private void OnTrickActivated(TrickAction trickAction, float val)
         {
-            // --- Logic for throwing ---
+            if (!CanDoTrick()) return;
+
             if (trickAction == TrickAction.Throw)
             {
                 var throwTrick = Tricks[TrickAction.Throw];
 
-                // 1. Manual return on the second press
                 if (_config.ReturnMode == SaberReturnMode.Manual && throwTrick.State == TrickState.Started)
                 {
                     throwTrick.EndTrick();
                     return;
                 }
 
-                // 2. Protection from spam and starting a new throw until the old one is completed
-                if (throwTrick.State != TrickState.Inactive || _pendingTricks.ContainsKey(TrickAction.Throw)) return;
-
-                // 3. Starting a new throw
-                if (!CanDoTrick()) return;
+                if (throwTrick.State != TrickState.Inactive) return;
 
                 _throwInputReleased = false;
-                var coroutine = StartCoroutine(ThrowLifecycleCoroutine(throwTrick));
-                _pendingTricks.Add(TrickAction.Throw, coroutine);
+                StartCoroutine(ThrowLifecycleCoroutine(throwTrick));
                 return;
             }
 
-            // --- Logic for other tricks ---
-            var trick = Tricks[trickAction];
-            if (!CanDoTrick()) return;
-            trick.Value = val;
-            if (trick.State != TrickState.Inactive) return;
-            if (_audioTimeSyncController.state == AudioTimeSyncController.State.Paused) return;
-            trick.StartTrick();
+            var otherTrick = Tricks[trickAction];
+            otherTrick.Value = val;
+            if (otherTrick.State != TrickState.Inactive) return;
+            otherTrick.StartTrick();
         }
 
         private IEnumerator ThrowLifecycleCoroutine(Trick trick)
         {
-            // 1. Swing phase
             yield return new WaitForSeconds(_config.ThrowWindUpDelay);
 
-            // 2. Throw
-            if (trick.State == TrickState.Inactive) trick.StartTrick();
-            _pendingTricks.Remove(TrickAction.Throw);
+            trick.StartTrick();
 
-            // 3. Return logic
-            if (_config.ReturnMode == SaberReturnMode.Manual)
-            {
-                yield break;
-            }
+            if (_config.ReturnMode == SaberReturnMode.Manual) yield break;
 
-            // In Timed mode
-            if (_throwInputReleased)
-            {
-                trick.EndTrick();
-            }
-            else
-            {
-                yield return new WaitUntil(() => _throwInputReleased);
-                trick.EndTrick();
-            }
+            yield return new WaitUntil(() => _throwInputReleased);
+            trick.EndTrick();
         }
 
         #region Trick Events
